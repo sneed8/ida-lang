@@ -1,0 +1,71 @@
+package io.github.sneed8.vm.symbol;
+
+public class Value {
+    public Object value;
+
+    public Value(Object value) {
+        if(value instanceof Value) throw new RuntimeException("Cannot wrap a Value inside a Value!");
+        this.value = value;
+    }
+
+    public Integer asNumber() {
+        if(!(value instanceof Integer)) throw new RuntimeException("EXPECTED NUMBER");
+        return (Integer)value;
+    }
+
+    public Double asDouble() {
+        if(!(value instanceof Double)) throw new RuntimeException("EXPECTED DOUBLE!");
+        return (Double)value;
+    }
+
+    public String asString() {
+        if(!(value instanceof String)) throw new RuntimeException("EXPECTED STRING!");
+        return (String)value;
+    }
+
+    public Character asChar() {
+        if(!(value instanceof Character)) throw new RuntimeException("EXPECTED CHAR!");
+        return (Character)value;
+    }
+
+    public Boolean asBool() {
+        if(!(value instanceof Boolean)) throw new RuntimeException("EXPECTED BOOL!");
+        return (Boolean)value;
+    }
+
+    public Object raw() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        switch (getType()) {
+            case ValType.NUMBER: {
+                return Integer.toString((Integer)value);
+            }
+            case ValType.DOUBLE: {
+                double d = (double)value;
+                return (d == (int)d ? Integer.toString((int)d) : Double.toString(d));
+            }
+            case ValType.STRING: {
+                return (String)value;
+            }
+            default: return String.valueOf(value);
+        }
+    }
+
+    // This might not be elegant but it'll do
+    public ValType getType() {
+        if(value instanceof Integer) {
+            return ValType.NUMBER;
+        } else if(value instanceof Double) {
+            return ValType.DOUBLE;
+        } else if(value instanceof String) {
+            return ValType.STRING;
+        } else if(value instanceof Character) {
+            return ValType.CHARACTER;
+        } else if(value instanceof Boolean) {
+            return ValType.BOOLEAN;
+        } else return ValType.NULL;
+    }
+}

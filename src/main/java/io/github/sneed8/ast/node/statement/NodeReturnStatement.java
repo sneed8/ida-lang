@@ -1,0 +1,20 @@
+package io.github.sneed8.ast.node.statement;
+
+import io.github.sneed8.ast.node.expression.NodeExpression;
+import io.github.sneed8.ast.visitor.ASTVisitor;
+import io.github.sneed8.vm.symbol.ValType;
+
+public class NodeReturnStatement extends NodeStatement{
+    public ValType returnType;
+    public NodeExpression returnValue;
+
+    public NodeReturnStatement(ValType returnType, NodeExpression returnValue) {
+        this.returnType = returnType;
+        this.returnValue = returnValue;
+    }
+
+    @Override
+    public <T> T accept(ASTVisitor<T> visitor) {
+        return visitor.visitNodeReturnStatement(this);
+    }
+}

@@ -1,0 +1,64 @@
+package io.github.sneed8.vm;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+import io.github.sneed8.ast.node.Program;
+import io.github.sneed8.ast.visitor.InterpreterVisitor;
+import io.github.sneed8.ast.visitor.TypeCheckerVisitor;
+import io.github.sneed8.lexer.Lexer;
+import io.github.sneed8.parser.Parser;
+import io.github.sneed8.vm.symbol.Function;
+import io.github.sneed8.vm.symbol.FunctionPool;
+
+public class VM {
+    private Lexer lexer = new Lexer();
+    private Parser parser;
+    private Program program;
+    public Deque<Environment> envStack = new ArrayDeque<>();
+    public FunctionPool functionPool = new FunctionPool();
+    public Function entryPoint;
+
+    public void execute(String source) {
+        parser = new Parser(lexer.tokenize(source));
+        program = parser.parseProgram();
+        run(program);
+    }
+
+    // This is the method that runs the logic
+    // Each face will use its own symboltable and environments
+    public void run(Program program) {
+        // Typechecking
+        Environment topEnv = new Environment();
+        envStack.addLast(topEnv);
+        TypeCheckerVisitor typechecker = new TypeCheckerVisitor(topEnv, this);
+        typechecker.walkTree(program);
+
+        envStack.clear();
+        Environment.resetGlobalScopeLevel();
+        
+        // Implement logic
+        topEnv = new Environment();
+        envStack.addLast(topEnv);
+        InterpreterVisitor interpreter = new InterpreterVisitor(this);
+        interpreter.walkTree(program);
+
+        envStack.clear();
+    }
+
+    public void enterScope() {
+        Environment newEnv = new Environment(getCurrentEnv());
+        envStack.addLast(newEnv);
+        // logger.info("Entering scope, level: " + Environment.globalScopeDepth);
+    }
+
+    public void exitScope() {
+        // logger.info("Exiting scope, level: " + Environment.globalScopeDepth);
+        getCurrentEnv().close();
+        envStack.removeLast();
+    }
+
+    public Environment getCurrentEnv() {
+        return envStack.peekLast();
+    }
+}

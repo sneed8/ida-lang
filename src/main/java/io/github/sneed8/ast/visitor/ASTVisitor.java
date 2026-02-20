@@ -1,0 +1,38 @@
+package io.github.sneed8.ast.visitor;
+
+import io.github.sneed8.ast.node.Program;
+import io.github.sneed8.ast.node.expression.*;
+import io.github.sneed8.ast.node.expression.literal.*;
+import io.github.sneed8.ast.node.statement.*;
+import io.github.sneed8.ast.node.types.*;
+import io.github.sneed8.vm.symbol.ValType;
+
+public interface ASTVisitor<T> {
+
+    void walkTree(Program program);
+    // Visiting NodeExpression
+    // For all the literals
+    // T visitNodeLiteral(NodeLiteral node);
+    T visitNodeNumericLiteral(NodeNumericLiteral node);
+    T visitNodeDoubleLiteral(NodeDoubleLiteral node);
+    T visitNodeStringLiteral(NodeStringLiteral node);
+    // T visitNodeCharacterLiteral(NodeCharacterLiteral node);
+    T visitNodeBooleanLiteral(NodeBooleanLiteral node);
+    T visitNodeNullLiteral(NodeNullLiteral node);
+    // Arithmetic Expressions
+    T visitNodeBinaryExpression(NodeBinaryExpression node, ValType type);
+    T visitNodeUnaryExpression(NodeUnaryExpression node, ValType type);
+    T visitNodeVariableReference(NodeVariableReference node);
+    T visitNodeFunctionCall(NodeFunctionCall node);
+    // Visiting NodeStatement
+    T visitNodeVariableDeclaration(NodeVariableDeclaration node);
+    T visitNodeExpressionStatement(NodeExpressionStatement node);
+    T visitNodePrintStatement(NodePrintStatement node);
+    T visitNodeFunctionDeclaration(NodeFunctionDeclaration node);
+    T visitNodeReturnStatement(NodeReturnStatement node);
+    // Visit misc aka can't be bothered to implement these methods
+    default T visitNodeType(NodeType node){return null;}
+    default T visitNodeBlock(NodeBlock nodeBlock){return null;}
+    default T visitNodeIfStatement(NodeIfStatement nodeIfStatement){return null;}
+    default T visitNodeWhileStatement(NodeWhileStatement nodeWhileStatement){return null;}
+}
