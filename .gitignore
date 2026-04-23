@@ -4,5 +4,4 @@ logs/
 *.class
 .idea/
 .vscode/
-examples/
 example.ida

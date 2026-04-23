@@ -1,4 +1,4 @@
-package io.github.thugborean;
+package io.github.sneed8;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
