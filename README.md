@@ -12,16 +12,16 @@ The goal and purpose of the language is to combine two things:
 
 Clone the program
 <pre>
-git clone git@github.com:thugborean/ida-lang.git
+git clone git@github.com:sneed8/ida-lang.git
 cd ida-lang
 </pre>
 Run interpreter with a source file from the examples directory (optionally your own) as an argument using maven/maven wrapper and being in the root directory
 <pre>
-mvn exec:java -Dida.file=src/main/java/io/github/thugborean/examples/examplefile.ida
+mvn exec:java -Dida.file=src/main/java/io/github/sneed8/examples/examplefile.ida
 </pre>
 or
 <pre>
-mvnw exec:java -Dida.file=src/main/java/io/github/thugborean/examples/examplefile.ida
+mvnw exec:java -Dida.file=src/main/java/io/github/sneed8/examples/examplefile.ida
 </pre>
 You can also compile normally and run the JAR-file
 <pre>
